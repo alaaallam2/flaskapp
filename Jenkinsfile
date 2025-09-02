@@ -38,7 +38,7 @@ pipeline {
                 script {
                     sh "docker rm -f $CONTAINER_NAME || true"
                     sh "docker pull $DOCKER_IMAGE"
-                    sh "docker run -d --name $CONTAINER_NAME -p $APP_PORT:8080 $DOCKER_IMAGE"
+                    sh "docker run -d --name $CONTAINER_NAME -p $APP_PORT:$APP_PORT $DOCKER_IMAGE"
                 }
             }
         }
