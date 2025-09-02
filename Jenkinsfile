@@ -5,7 +5,7 @@ pipeline {
         DOCKER_HUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKER_IMAGE = "alaaallam2/flaskapp"
         CONTAINER_NAME = "flaskapp-container"
-        APP_PORT = "8080"
+        APP_PORT = "5000"
     }
 
     stages {
@@ -38,7 +38,7 @@ pipeline {
                 script {
                     sh "docker rm -f $CONTAINER_NAME || true"
                     sh "docker pull $DOCKER_IMAGE"
-                    sh "docker run -d --name $CONTAINER_NAME -p $APP_PORT:$APP_PORT $DOCKER_IMAGE"
+                    sh "docker run -d --name $CONTAINER_NAME -p $APP_PORT:8080 $DOCKER_IMAGE"
                 }
             }
         }
@@ -55,7 +55,7 @@ pipeline {
 
     post {
         success {
-            echo "✅ Pipeline completed successfully! Your Flask app is up and running 🚀"
+            echo "✅ Pipeline completed successfully! Your Flask app is up and running on port ${APP_PORT} 🚀"
         }
         failure {
             echo "❌ Pipeline failed! Please check logs."
