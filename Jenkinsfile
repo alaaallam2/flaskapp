@@ -3,7 +3,9 @@ pipeline {
 
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('dockerhub-credentials')
-        DOCKER_IMAGE = "alaaallam2/flaskapp"   // غيريها لو اسم اليوزر في DockerHub غير كده
+        DOCKER_IMAGE = "alaaallam2/flaskapp"
+        CONTAINER_NAME = "flaskapp-container"
+        APP_PORT = "5000"
     }
 
     stages {
@@ -30,5 +32,34 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy Container') {
+            steps {
+                script {
+                    sh "docker rm -f $CONTAINER_NAME || true"
+                    sh "docker pull $DOCKER_IMAGE"
+                    sh "docker run -d --name $CONTAINER_NAME -p $APP_PORT:5000 $DOCKER_IMAGE"
+                }
+            }
+        }
+
+        stage('Test App') {
+            steps {
+                script {
+                    sh "sleep 5"
+                    sh "curl -f http://localhost:$APP_PORT || (echo 'App did not respond!' && exit 1)"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Pipeline completed successfully! Your Flask app is up and running 🚀"
+        }
+        failure {
+            echo "❌ Pipeline failed! Please check logs."
+        }
     }
 }
+
