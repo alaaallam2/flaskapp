@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My To-Do App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      color: #333;
+    }
+    form {
+      margin: 20px 0;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: white;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 300px;
+    }
+    a {
+      text-decoration: none;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>My To-Do List</h1>
+  <form action="/add" method="POST">
+    <input type="text" name="task" placeholder="Enter new task..." required>
+    <button type="submit">Add</button>
+  </form>
+  <ul>
+    {% for task in tasks %}
+      <li>
+        {{ task }}
+        <a href="/delete/{{ loop.index0 }}">Delete</a>
+      </li>
+    {% else %}
+      <li>No tasks yet!</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
+
